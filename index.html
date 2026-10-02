@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de préstamo de notebooks</title>
+
+<style>
+
+/* =========================
+   ESTILO GENERAL
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f6fa;
+    color: #202020;
+}
+
+/* =========================
+   ENCABEZADO
+========================= */
+
+.header {
+    height: 75px;
+    background: #382bb0;
+    color: white;
+
+    display: flex;
+    align-items: center;
+
+    padding: 8px 20px;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 42px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.header p {
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+
+.usuario {
+    margin-left: auto;
+    font-size: 14px;
+}
+
+/* =========================
+   ESTRUCTURA
+========================= */
+
+.layout {
+    display: grid;
+    grid-template-columns: 145px 1fr 190px;
+    min-height: calc(100vh - 115px);
+}
+
+/* =========================
+   MENÚ LATERAL
+========================= */
+
+.sidebar {
+    background: #291b96;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-btn {
+    border: none;
+    background: transparent;
+    color: white;
+
+    min-height: 75px;
+
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    background: #4235bd;
+}
+
+.nav-btn.active {
+    background: #4e42cf;
+}
+
+.nav-icon {
+    font-size: 23px;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    color: #d9d7ff;
+    text-align: center;
+    font-size: 11px;
+    padding: 15px 5px;
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.main-content {
+    background: white;
+    padding: 25px 20px;
+    min-width: 0;
+}
+
+/* =========================
+   BIENVENIDA
+========================= */
+
+.welcome {
+    background: #c6e3e6;
+
+    min-height: 95px;
+
+    border-radius: 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 15px;
+
+    gap: 20px;
+}
+
+.welcome-icon {
+    font-size: 55px;
+}
+
+.welcome h2 {
+    margin: 0 0 7px;
+    font-size: 21px;
+    font-weight: normal;
+}
+
+.welcome p {
+    margin: 0;
+    color: #657176;
+    font-size: 14px;
+}
+
+/* =========================
+   ESTADÍSTICAS
+========================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin: 15px 5%;
+}
+
+.stat-card {
+    background: #dedede;
+
+    border-radius: 25px;
+
+    min-height: 85px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    text-align: center;
+}
+
+.stat-card .icon {
+    font-size: 25px;
+    color: #382bb0;
+}
+
+.stat-card p {
+    margin: 0 0 5px;
+    font-size: 12px;
+}
+
+.stat-card strong {
+    color: #30268e;
+    font-size: 24px;
+}
+
+/* =========================
+   ACCIONES
+========================= */
+
+.section-title {
+    margin: 10px 2%;
+    font-size: 21px;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin: 0 2%;
+}
+
+.action-btn {
+    min-height: 95px;
+
+    border: none;
+
+    border-radius: 45px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+}
+
+.action-icon {
+    font-size: 25px;
+}
+
+.action-btn strong {
+    font-size: 13px;
+}
+
+.action-btn small {
+    font-size: 10px;
+}
+
+.blue {
+    background: #526bfa;
+    color: white;
+}
+
+.lavender {
+    background: #a4b0ff;
+    color: #171747;
+}
+
+.light {
+    background: #c5ccff;
+    color: #171747;
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.quick-form {
+    margin-top: 15px;
+    padding: 15px;
+}
+
+.quick-form h2 {
+    margin: 0 0 15px;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+.campo input {
+    width: 100%;
+    height: 38px;
+
+    border: 1px solid #c8c8c8;
+
+    border-radius: 6px;
+
+    padding: 8px;
+
+    font-size: 14px;
+}
+
+.campo input:focus {
+    outline: 2px solid #526bfa;
+}
+
+.submit-btn {
+    margin-top: 15px;
+
+    background: #526bfa;
+    color: white;
+
+    border: none;
+
+    border-radius: 25px;
+
+    padding: 12px 22px;
+
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #382bb0;
+}
+
+.mensaje {
+    color: #16703a;
+    font-size: 14px;
+}
+
+/* =========================
+   PANEL DERECHO
+========================= */
+
+.info-panel {
+    background: #c6e3e6;
+
+    border-radius: 25px;
+
+    margin: 25px 10px;
+
+    padding: 20px 13px;
+
+    align-self: start;
+}
+
+.info-panel h2 {
+    text-align: center;
+
+    font-size: 17px;
+
+    font-weight: normal;
+
+    margin-top: 0;
+
+    margin-bottom: 25px;
+}
+
+.info-item {
+    display: flex;
+
+    gap: 8px;
+
+    margin-bottom: 18px;
+}
+
+.info-item span {
+    font-size: 19px;
+}
+
+.info-item p {
+    margin: 0;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.info-hours {
+    border-top: 1px solid #a4cdd3;
+
+    margin-top: 25px;
+
+    padding-top: 15px;
+
+    font-size: 12px;
+}
+
+.info-hours h3 {
+    font-size: 14px;
+}
+
+.info-slogan {
+    text-align: center;
+
+    margin-top: 25px;
+
+    color: #30268e;
+}
+
+.info-slogan span {
+    font-size: 30px;
+}
+
+.info-slogan h3 {
+    font-size: 14px;
+}
+
+.info-slogan p {
+    font-size: 10px;
+    color: #53616b;
+}
+
+/* =========================
+   PÁGINAS INTERNAS
+========================= */
+
+.page {
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.page h2 {
+    color: #30268e;
+}
+
+.page-description {
+    color: #667085;
+}
+
+.vertical-form {
+    max-width: 550px;
+}
+
+.vertical-form .campo {
+    margin-bottom: 15px;
+}
+
+/* =========================
+   TABLA
+========================= */
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 20px;
+
+    font-size: 13px;
+}
+
+th,
+td {
+    padding: 11px;
+
+    border-bottom: 1px solid #ddd;
+
+    text-align: left;
+}
+
+th {
+    background: #e7e5ff;
+
+    color: #30268e;
+}
+
+.estado {
+    padding: 5px 8px;
+
+    border-radius: 15px;
+
+    font-size: 11px;
+}
+
+.prestado {
+    background: #fff0c2;
+    color: #855500;
+}
+
+.devuelto {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.empty {
+    text-align: center;
+    padding: 25px;
+    color: #777;
+}
+
+/* =========================
+   OCULTAR SECCIONES
+========================= */
+
+.hidden {
+    display: none;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    height: 40px;
+
+    background: #21177c;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 12px;
+}
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 900px) {
+
+    .layout {
+        grid-template-columns: 120px 1fr;
+    }
+
+    .info-panel {
+        grid-column: 2;
+        margin: 10px 20px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        height: auto;
+        padding: 10px;
+    }
+
+    .header h1 {
+        font-size: 16px;
+    }
+
+    .usuario {
+        display: none;
+    }
+
+    .layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .nav-btn {
+        min-width: 100px;
+        min-height: 65px;
+        font-size: 10px;
+    }
+
+    .main-content {
+        padding: 12px;
+    }
+
+    .welcome {
+        flex-direction: column;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+        margin: 12px 0;
+    }
+
+    .actions {
+        grid-template-columns: 1fr;
+        margin: 0;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     ENCABEZADO
+========================= -->
+
+<header class="header">
+
+    <div class="logo">💻</div>
+
+    <div>
+        <h1>Sistema de préstamo de notebooks</h1>
+        <p>ITR</p>
+    </div>
+
+    <div class="usuario">
+    
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+<!-- =========================
+     MENÚ LATERAL
+========================= -->
+
+<aside class="sidebar">
+
+    <button
+        class="nav-btn active"
+        onclick="mostrarPagina('inicio', this)"
+    >
+        <span class="nav-icon">⌂</span>
+        Inicio
+    </button>
+
+    <button
+        class="nav-btn"
+        onclick="mostrarPagina('prestamo', this)"
+    >
+        <span class="nav-icon">💻</span>
+        Registrar préstamo
+    </button>
+
+    <button
+        class="nav-btn"
+        onclick="mostrarPagina('devolucion', this)"
+    >
+        <span class="nav-icon">↩</span>
+        Registrar devolución
+    </button>
+
+    <button
+        class="nav-btn"
+        onclick="mostrarPagina('historial', this)"
+    >
+        <span class="nav-icon">▤</span>
+        Historial
+    </button>
+
+    <div class="sidebar-footer">
+       
+    </div>
+
+</aside>
+
+
+<!-- =========================
+     CONTENIDO PRINCIPAL
+========================= -->
+
+<main class="main-content">
+
+
+<!-- =========================
+     INICIO
+========================= -->
+
+<section id="inicio">
+
+    <div class="welcome">
+
+        <div class="welcome-icon">
+            💻
+        </div>
+
+        <div>
+
+            <h2>
+                Bienvenido al sistema de préstamos de notebooks
+            </h2>
+
+            <p>
+                Desde aquí podés registrar préstamos,
+                devoluciones y consultar el historial de equipos.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ESTADÍSTICAS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="icon">
+                💻
+            </div>
+
+            <div>
+
+                <p>
+                    Préstamos activos
+                </p>
+
+                <strong id="activos">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="icon">
+                ▤
+            </div>
+
+            <div>
+
+                <p>
+                    Total de préstamos
+                </p>
+
+                <strong id="total">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="icon">
+                ✓
+            </div>
+
+            <div>
+
+                <p>
+                    Equipos disponibles
+                </p>
+
+                <strong id="disponibles">
+                    24
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACCIONES -->
+
+    <h2 class="section-title">
+        Acciones principales
+    </h2>
+
+
+    <div class="actions">
+
+        <button
+            class="action-btn blue"
+            onclick="mostrarPagina('prestamo')"
+        >
+
+            <span class="action-icon">
+                ＋
+            </span>
+
+            <strong>
+                Registrar un préstamo
+            </strong>
+
+            <small>
+                Asignar un equipo a un alumno →
+            </small>
+
+        </button>
+
+
+        <button
+            class="action-btn lavender"
+            onclick="mostrarPagina('devolucion')"
+        >
+
+            <span class="action-icon">
+                ↩
+            </span>
+
+            <strong>
+                Registrar una devolución
+            </strong>
+
+            <small>
+                Liberar un equipo →
+            </small>
+
+        </button>
+
+
+        <button
+            class="action-btn light"
+            onclick="mostrarPagina('historial')"
+        >
+
+            <span class="action-icon">
+                ◷
+            </span>
+
+            <strong>
+                Ver historial
+            </strong>
+
+            <small>
+                Consultar movimientos →
+            </small>
+
+        </button>
+
+    </div>
+
+
+    <!-- REGISTRO RÁPIDO -->
+
+    <div class="quick-form">
+
+        <h2>
+            Registro rápido de préstamo
+        </h2>
+
+
+        <form id="formPrestamo">
+
+            <div class="form-grid">
+
+
+                <div class="campo">
+
+                    <label>
+                        Nombre del alumno
+                    </label>
+
+                    <input
+                        id="alumno"
+                        placeholder="Ej: Juan Pérez"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label>
+                        DNI
+                    </label>
+
+                    <input
+                        id="dni"
+                        placeholder="Ej: 45123456"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label>
+                        N.º del equipo
+                    </label>
+
+                    <input
+                        id="serie"
+                        placeholder="Ej: NET-001"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="submit-btn"
+                type="submit"
+            >
+                ＋ Registrar préstamo
+            </button>
+
+        </form>
+
+
+        <p
+            id="mensajePrestamo"
+            class="mensaje"
+        ></p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PRÉSTAMO
+========================= -->
+
+<section
+    id="prestamo"
+    class="page hidden"
+>
+
+    <h2>
+        💻 Registrar préstamo
+    </h2>
+
+    <p class="page-description">
+        Completá los datos del alumno y del equipo.
+    </p>
+
+
+    <form
+        id="formPrestamoCompleto"
+        class="vertical-form"
+    >
+
+        <div class="campo">
+
+            <label>
+                Nombre del alumno
+            </label>
+
+            <input
+                id="alumno2"
+                placeholder="Nombre y apellido"
+                required
+            >
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                DNI
+            </label>
+
+            <input
+                id="dni2"
+                placeholder="Número de DNI"
+                required
+            >
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Curso
+            </label>
+
+            <input
+                id="curso"
+                placeholder="Ej: 5to P"
+                required
+            >
+
+        </div>
+
+
+        <div class="campo">
+
+            <label>
+                Número de equipo
+            </label>
+
+            <input
+                id="serie2"
+                placeholder="Ej: NET-001"
+                required
+            >
+
+        </div>
+
+
+        <button
+            class="submit-btn"
+            type="submit"
+        >
+            ＋ Confirmar préstamo
+        </button>
+
+    </form>
+
+
+    <p
+        id="mensajePrestamo2"
+        class="mensaje"
+    ></p>
+
+</section>
+
+
+<!-- =========================
+     DEVOLUCIÓN
+========================= -->
+
+<section
+    id="devolucion"
+    class="page hidden"
+>
+
+    <h2>
+        ↩ Registrar devolución
+    </h2>
+
+    <p class="page-description">
+        Ingresá el número del equipo que se devuelve.
+    </p>
+
+
+    <form
+        id="formDevolucion"
+        class="vertical-form"
+    >
+
+        <div class="campo">
+
+            <label>
+                Número de equipo
+            </label>
+
+            <input
+                id="equipoDevolucion"
+                placeholder="Ej: NET-001"
+                required
+            >
+
+        </div>
+
+
+        <button
+            class="submit-btn"
+            type="submit"
+        >
+            ↩ Confirmar devolución
+        </button>
+
+    </form>
+
+
+    <p
+        id="mensajeDevolucion"
+        class="mensaje"
+    ></p>
+
+</section>
+
+
+<!-- =========================
+     HISTORIAL
+========================= -->
+
+<section
+    id="historial"
+    class="page hidden"
+>
+
+    <h2>
+        ▤ Historial de préstamos
+    </h2>
+
+    <p class="page-description">
+        Consultá los préstamos y devoluciones registrados.
+    </p>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Alumno
+                    </th>
+
+                    <th>
+                        DNI
+                    </th>
+
+                    <th>
+                        Curso
+                    </th>
+
+                    <th>
+                        Equipo
+                    </th>
+
+                    <th>
+                        Fecha
+                    </th>
+
+                    <th>
+                        Estado
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="tablaHistorial">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =========================
+     PANEL DERECHO
+========================= -->
+
+<aside class="info-panel">
+
+    <h2>
+        Información útil
+    </h2>
+
+
+    <div class="info-item">
+
+        <span>
+            💻
+        </span>
+
+        <p>
+            Cada equipo tiene un número de serie
+            único que se utiliza para registrarlo.
+        </p>
+
+    </div>
+
+
+    <div class="info-item">
+
+        <span>
+            ⓘ
+        </span>
+
+        <p>
+            El préstamo se registra con los datos
+            del alumno y su curso.
+        </p>
+
+    </div>
+
+
+    <div class="info-item">
+
+        <span>
+            ⚠
+        </span>
+
+        <p>
+            Al devolver el equipo, se libera para
+            su próximo uso.
+        </p>
+
+    </div>
+
+
+    <div class="info-hours">
+
+        <h3>
+            🗓 Horarios de atención
+        </h3>
+
+        <p>
+            Lunes a viernes
+        </p>
+
+        <strong>
+            8:00 a 17:00 hs
+        </strong>
+
+    </div>
+
+
+    <div class="info-slogan">
+
+        
+    </div>
+
+</aside>
+
+</div>
+
+
+<footer class="footer">
+
+    Sistema de préstamos escolares · ITR
+
+</footer>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+const TOTAL_EQUIPOS = 24;
+
+
+// Cargar datos guardados
+
+let prestamos =
+    JSON.parse(
+        localStorage.getItem("prestamosNetbooks") || "[]"
+    );
+
+
+// =========================
+// CAMBIAR DE PÁGINA
+// =========================
+
+function mostrarPagina(id, boton) {
+
+    document
+        .querySelectorAll(".main-content > section")
+        .forEach(seccion => {
+
+            seccion.classList.add("hidden");
+
+        });
+
+
+    document
+        .getElementById(id)
+        .classList.remove("hidden");
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+
+    if (boton) {
+
+        boton.classList.add("active");
+
+    }
+
+}
+
+
+// =========================
+// GUARDAR DATOS
+// =========================
+
+function guardar() {
+
+    localStorage.setItem(
+        "prestamosNetbooks",
+        JSON.stringify(prestamos)
+    );
+
+    actualizar();
+
+}
+
+
+// =========================
+// ACTUALIZAR ESTADÍSTICAS
+// =========================
+
+function actualizar() {
+
+    const activos =
+        prestamos.filter(
+            p => p.estado === "Prestado"
+        );
+
+
+    document.getElementById("activos")
+        .textContent = activos.length;
+
+
+    document.getElementById("total")
+        .textContent = prestamos.length;
+
+
+    document.getElementById("disponibles")
+        .textContent =
+            Math.max(
+                0,
+                TOTAL_EQUIPOS - activos.length
+            );
+
+
+    actualizarHistorial();
+
+}
+
+
+// =========================
+// ACTUALIZAR HISTORIAL
+// =========================
+
+function actualizarHistorial() {
+
+    const tabla =
+        document.getElementById(
+            "tablaHistorial"
+        );
+
+
+    tabla.innerHTML = "";
+
+
+    if (prestamos.length === 0) {
+
+        tabla.innerHTML = `
+            <tr>
+                <td
+                    colspan="6"
+                    class="empty"
+                >
+                    Todavía no hay préstamos registrados.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    [...prestamos]
+        .reverse()
+        .forEach(prestamo => {
+
+            const fila =
+                document.createElement("tr");
+
+
+            fila.innerHTML = `
+
+                <td>
+                    ${prestamo.alumno}
+                </td>
+
+                <td>
+                    ${prestamo.dni}
+                </td>
+
+                <td>
+                    ${prestamo.curso || "-"}
+                </td>
+
+                <td>
+                    ${prestamo.serie}
+                </td>
+
+                <td>
+                    ${prestamo.fecha}
+                </td>
+
+                <td>
+
+                    <span
+                        class="estado
+                        ${
+                            prestamo.estado === "Prestado"
+                            ? "prestado"
+                            : "devuelto"
+                        }"
+                    >
+                        ${prestamo.estado}
+                    </span>
+
+                </td>
+
+            `;
+
+
+            tabla.appendChild(fila);
+
+        });
+
+}
+
+
+// =========================
+// REGISTRAR PRÉSTAMO
+// =========================
+
+function registrarPrestamo(
+    alumno,
+    dni,
+    curso,
+    serie,
+    mensaje
+) {
+
+    alumno = alumno.trim();
+    dni = dni.trim();
+    curso = curso.trim();
+    serie = serie.trim();
+
+
+    const equipoOcupado =
+        prestamos.some(
+            p =>
+                p.serie.toLowerCase()
+                === serie.toLowerCase()
+                &&
+                p.estado === "Prestado"
+        );
+
+
+    if (equipoOcupado) {
+
+        mensaje.textContent =
+            "⚠️ Esta notebook ya está prestada.";
+
+        return false;
+
+    }
+
+
+    const activos =
+        prestamos.filter(
+            p => p.estado === "Prestado"
+        ).length;
+
+
+    if (activos >= TOTAL_EQUIPOS) {
+
+        mensaje.textContent =
+            "⚠️ No hay notebooks disponibles.";
+
+        return false;
+
+    }
+
+
+    prestamos.push({
+
+        id: Date.now(),
+
+        alumno: alumno,
+
+        dni: dni,
+
+        curso:
+            curso || "No especificado",
+
+        serie: serie,
+
+        fecha:
+            new Date()
+                .toLocaleDateString("es-AR"),
+
+        estado: "Prestado"
+
+    });
+
+
+    guardar();
+
+
+    mensaje.textContent =
+        "✅ ¡Préstamo registrado correctamente!";
+
+
+    return true;
+
+}
+
+
+// =========================
+// FORMULARIO RÁPIDO
+// =========================
+
+document
+    .getElementById("formPrestamo")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const alumno =
+                document
+                    .getElementById("alumno")
+                    .value;
+
+
+            const dni =
+                document
+                    .getElementById("dni")
+                    .value;
+
+
+            const serie =
+                document
+                    .getElementById("serie")
+                    .value;
+
+
+            const mensaje =
+                document
+                    .getElementById(
+                        "mensajePrestamo"
+                    );
+
+
+            if (
+                registrarPrestamo(
+                    alumno,
+                    dni,
+                    "",
+                    serie,
+                    mensaje
+                )
+            ) {
+
+                this.reset();
+
+            }
+
+        }
+    );
+
+
+// =========================
+// FORMULARIO COMPLETO
+// =========================
+
+document
+    .getElementById(
+        "formPrestamoCompleto"
+    )
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const alumno =
+                document
+                    .getElementById("alumno2")
+                    .value;
+
+
+            const dni =
+                document
+                    .getElementById("dni2")
+                    .value;
+
+
+            const curso =
+                document
+                    .getElementById("curso")
+                    .value;
+
+
+            const serie =
+                document
+                    .getElementById("serie2")
+                    .value;
+
+
+            const mensaje =
+                document
+                    .getElementById(
+                        "mensajePrestamo2"
+                    );
+
+
+            if (
+                registrarPrestamo(
+                    alumno,
+                    dni,
+                    curso,
+                    serie,
+                    mensaje
+                )
+            ) {
+
+                this.reset();
+
+            }
+
+        }
+    );
+
+
+// =========================
+// DEVOLUCIÓN
+// =========================
+
+document
+    .getElementById(
+        "formDevolucion"
+    )
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const serie =
+                document
+                    .getElementById(
+                        "equipoDevolucion"
+                    )
+                    .value
+                    .trim();
+
+
+            const mensaje =
+                document
+                    .getElementById(
+                        "mensajeDevolucion"
+                    );
+
+
+            const prestamo =
+                [...prestamos]
+                    .reverse()
+                    .find(
+                        p =>
+                            p.serie
+                                .toLowerCase()
+                            ===
+                            serie
+                                .toLowerCase()
+                            &&
+                            p.estado === "Prestado"
+                    );
+
+
+            if (!prestamo) {
+
+                mensaje.textContent =
+                    "⚠️ No se encontró un préstamo activo para ese equipo.";
+
+                return;
+
+            }
+
+
+            prestamo.estado =
+                "Devuelto";
+
+
+            guardar();
+
+
+            this.reset();
+
+
+            mensaje.textContent =
+                "✅ ¡Devolución registrada correctamente!";
+
+        }
+    );
+
+
+// =========================
+// INICIAR
+// =========================
+
+actualizar();
+
+</script>
+
+</body>
+</html>
